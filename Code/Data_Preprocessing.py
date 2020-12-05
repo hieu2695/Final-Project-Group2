@@ -79,9 +79,27 @@ np.save("../processed_data/splitted_data/y_val.npy", y_val)
 np.save("../processed_data/splitted_data/x_test.npy", x_test)
 np.save("../processed_data/splitted_data/y_test.npy", y_test)
 
-#%%--------------
-print("Done!")
+#%% -------------------------- Finding rare classes -----------------------------
+x_rare = []
+y_rare = []
 
+for i in range(len(y_train)):
+    if (y[i,8] == 1) or (y[i,9] == 1) or (y[i,10] == 1) or (y[i,15] == 1) or (y[i,17] == 1) or (y[i,20] == 1) or  (y[i,27] == 1):
+        y_rare.append(y[i])
+        x_rare.append(x[i])
+x_rare = np.array(x_rare)
+y_rare = np.array(y_rare)
+
+#%% -------------------------- Oversampling --------------------------------------
+for k in range(4):
+    x_train = np.concatenate((x_train, x_rare))
+    y_train = np.concatenate((y_train, y_rare))
+
+#%% --------------------- Save resampled data -------------
+np.save("../processed_data/splitted_data/x_train_over", x_train)
+np.save("../processed_data/splitted_data/y_train_over.npy", y_train)
+
+print("Done!")
 
 
 

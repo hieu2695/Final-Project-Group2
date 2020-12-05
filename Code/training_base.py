@@ -1,3 +1,5 @@
+# ==================================== BASELINE RESNET34 =============================================================
+#%% ------------------------------------ Import Lib ----------------------------------------------------------------
 import torch
 import torch.nn as nn
 import os
@@ -19,11 +21,11 @@ random.seed(SEED)
 np.random.seed(SEED)
 torch.manual_seed(SEED)
 
+# number of labels
 n_classes = 28
 
 # %% -------------------------------------- Data Prep ------------------------------------------------------------------
 # load the data
-# split data into the training set and testing set
 x_train, y_train = np.load("../processed_data/splitted_data/x_train.npy", allow_pickle=True), np.load("../processed_data/splitted_data/y_train.npy", allow_pickle=True)
 x_val, y_val = np.load("../processed_data/splitted_data/x_val.npy", allow_pickle=True), np.load("../processed_data/splitted_data/y_val.npy", allow_pickle=True)
 x_test, y_test = np.load("../processed_data/splitted_data/x_test.npy", allow_pickle=True), np.load("../processed_data/splitted_data/y_test.npy", allow_pickle=True)
@@ -33,32 +35,33 @@ print(x_val.shape, y_val.shape)
 print(x_test.shape, y_test.shape)
 
 
-#%% ---------- Convert to torch.Tensor -----------
+#%% ------------------------------ Convert to Tensor, DataLoader generation ----------------------------------
 train_data_transform = transforms.Compose([
-    transforms.ToTensor(),
-])
+    transforms.ToTensor(),])
 test_data_transform = transforms.Compose([
-    transforms.ToTensor(),
-])
+    transforms.ToTensor(),])
 
 batch_train = 128
 batch_test = 512
 
+# apply conversion to tensor
 trainset = DataAug(x_train, y_train, transform = train_data_transform ,length=len(x_train))
 valset = DataAug(x_val, y_val, transform = test_data_transform, length=len(x_val))
 testset = DataAug(x_test, y_test, transform = test_data_transform, length=len(x_test))
 
+# generate dataloader
 trainloader = DataLoader(trainset, batch_size=batch_train)
 valloader = DataLoader(valset, batch_size=batch_test)
 testloader = DataLoader(testset, batch_size=batch_test)
 
+# check sample size
 print(len(trainloader.sampler))
 print(len(valloader.sampler))
 print(len(testloader.sampler))
 
 
 
-#%% -------------- Model
+#%% -------------------------------- Model Architecture ------------------------------------------------------
 
 model = models.resnet34(pretrained=True)
 
@@ -83,21 +86,20 @@ for param in model.parameters():
 
 
 
-#%% -------------- Preparation before training -----------
-
-
+#%% --------------------------------- Preparation before training ----------------------------------------
+# loss function, epochs, lr, optimizer
 criterion_BCELog = nn.BCEWithLogitsLoss()
 epochs = 1000
-LR = 1e-3
+LR = 3e-4
 optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 
 
-#%%---------- training and fine-tuning model --------------
+#%%------------------------------ Training and fine-tuning model ---------------------------------------------
 path ="../Model/model_resnet34_baseline.pt"
-model, val_losses, running_f1 = train_baseline_model(model, criterion_BCELog, optimizer, epochs, "train_val",trainloader, valloader,  path)
+model, val_losses, running_f1, running_f1_sample = train_baseline_model(model, criterion_BCELog, optimizer, epochs, "train_val",trainloader, valloader,  path)
 
 
-#%%---------- final evaluation on testing set -------------
+#%%------------------------------- Final evaluation on testing set ------------------------------------------------
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 running_preds = []
 running_targets = []
@@ -121,12 +123,14 @@ for data, label in testloader:
 
 running_preds = np.array(running_preds)
 running_targets = np.array(running_targets)
-F1_macro = f1_score(running_targets, running_preds, average='samples')
+F1_macro = f1_score(running_targets, running_preds, average='macro')
+F1_sample = f1_score(running_targets, running_preds, average='samples')
 
 print("Macro F1-score on testing set is: {:.6f}".format(F1_macro))
+print("Samples F1-score on testing set is: {:.6f}".format(F1_sample))
 
 
-#%% ------------ Learning curve --------------------
+#%% ---------------------------------------- Learning curve ----------------------------------------------------------
 inds = np.arange(1,len(running_f1)+1)
 plt.figure()
 plt.plot(inds.astype(np.uint8), val_losses, label = "BCEWithLogits loss", linestyle='--', marker='o')
