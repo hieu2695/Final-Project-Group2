@@ -1,6 +1,6 @@
 # Human Protein Atlas Image Classification
 
---
+
 ## Introduction
 
 Proteins are complex molecules made of thousands of amino acids, being responsible for many important functions in human body such as execution and regulation of issues and organs. Identifying the pattern and organelle localization of proteins would provide more insights about human living cells and accelerate the diagnostic of diseases. Moreover, understanding the complexity of cell structure plays a key role in developing medicine and treatment. Therefore, the classification of proteins has become a field of interest for many scientists and biomedical researchers.
