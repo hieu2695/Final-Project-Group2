@@ -42,12 +42,14 @@ def train_baseline_model(model, criterion, optimizer, epochs, mode, trainloader,
     count = 0
     train_losses, val_losses = [], []
     running_f1 = []
+    running_f1_sample = []
 
 
     print("Start training ...")
 
     for i in range(epochs):
         F1_macro = 0.0
+        F1_sample = 0.0
         #print("\n")
         print("=" * 30)
         print('Epoch {}/{}'.format(i+1, epochs))
@@ -123,8 +125,10 @@ def train_baseline_model(model, criterion, optimizer, epochs, mode, trainloader,
 
             running_preds = np.array(running_preds)
             running_targets = np.array(running_targets)
-            F1_macro = f1_score(running_targets, running_preds, average='samples')
+            F1_macro = f1_score(running_targets, running_preds, average='macro')
+            F1_sample = f1_score(running_targets, running_preds, average='samples')
             running_f1.append(F1_macro)
+            running_f1_sample.append(F1_sample)
 
             # track the loss
             val_loss = val_loss / len(testloader.sampler)
@@ -137,18 +141,20 @@ def train_baseline_model(model, criterion, optimizer, epochs, mode, trainloader,
                 torch.save(best_model_wts, path)
                 best_loss = val_loss
                 best_macro_F1 = F1_macro
+                best_sample_F1 = F1_sample
 
             else:
                 if  val_loss < best_loss:
                     best_loss = val_loss
                     best_model_wts = copy.deepcopy(model.state_dict())
                     best_macro_F1 = F1_macro
+                    best_sample_F1 = F1_sample
                     torch.save(best_model_wts, path)
                     count = 0
                 else:
                     count = count + 1
-            print('Epoch Loss: {:.6f} |  Validation BCE Loss: {:.6f} | Macro F1: {:.6f}'.format(
-                train_loss, val_loss, F1_macro))
+            print('Epoch Loss: {:.6f} |  Validation BCE Loss: {:.6f} | Macro F1: {:.6f} | Sample F1: {:.6f}'.format(
+                train_loss, val_loss, F1_macro, F1_sample))
 
         if mode == "train":
             if (count == 10) or (best_loss < 1e-3):
@@ -160,11 +166,11 @@ def train_baseline_model(model, criterion, optimizer, epochs, mode, trainloader,
 
     print("=" * 20)
     print("Training Complete.")
-    print("Best_loss: {:.6f} | Macro F1-score: {:.6f}".format(best_loss, best_macro_F1))
+    print("Best_loss: {:.6f} | Macro F1-score: {:.6f} | Sample F1-score: {:.6f}".format(best_loss, best_macro_F1, best_sample_F1))
 
     # load best model weights
     model.load_state_dict(torch.load(path))
-    return model, val_losses, running_f1
+    return model, val_losses, running_f1, running_f1_sample
 
 # ========================
 def train_model(model, criterion1, criterion2, optimizer, epochs, mode, trainloader, testloader, path):
@@ -175,6 +181,7 @@ def train_model(model, criterion1, criterion2, optimizer, epochs, mode, trainloa
     count = 0
     train_losses, val_losses, val_losses_ex = [], [], []
     running_f1 = []
+    running_f1_sample = []
 
 
     print("Start training ...")
@@ -182,6 +189,7 @@ def train_model(model, criterion1, criterion2, optimizer, epochs, mode, trainloa
     for i in range(epochs):
         #print("\n")
         F1_macro = 0.0
+        F1_sample = 0.0
         print("=" * 30)
         print('Epoch {}/{}'.format(i+1, epochs))
         print('-' * 30)
@@ -248,8 +256,8 @@ def train_model(model, criterion1, criterion2, optimizer, epochs, mode, trainloa
                     probs = torch.sigmoid(val_logits)
                     probs = torch.round(probs)
                     probs = probs.cpu().detach().numpy()
-                    loss = criterion1(val_logits, label)
-                    loss_ex = criterion2(val_logits, label)
+                    loss = criterion2(val_logits, label)
+                    loss_ex = criterion1(val_logits, label)
                     val_loss += loss.item()*data.size(0)
                     val_loss_ex += loss_ex.item()*data.size(0)
 
@@ -259,8 +267,9 @@ def train_model(model, criterion1, criterion2, optimizer, epochs, mode, trainloa
             running_preds = np.array(running_preds)
             running_targets = np.array(running_targets)
             F1_macro = f1_score(running_targets, running_preds, average='macro')
+            F1_sample = f1_score(running_targets, running_preds, average='samples')
             running_f1.append(F1_macro)
-
+            running_f1_sample.append(F1_sample)
             # track the loss
             val_loss = val_loss / len(testloader.sampler)
             val_losses.append(val_loss)
@@ -275,18 +284,20 @@ def train_model(model, criterion1, criterion2, optimizer, epochs, mode, trainloa
                 torch.save(best_model_wts, path)
                 best_loss = val_loss
                 best_macro_F1 = F1_macro
+                best_sample_F1 = F1_sample
 
             else:
                 if  val_loss < best_loss:
                     best_loss = val_loss
                     best_model_wts = copy.deepcopy(model.state_dict())
                     best_macro_F1 = F1_macro
+                    best_sample_F1 = F1_sample
                     torch.save(best_model_wts, path)
                     count = 0
                 else:
                     count = count + 1
-            print('Epoch Loss: {:.6f} |  Validation BCE Loss: {:.6f}  |  Validation Focal Loss: {:.6f} | F1-score: {:.6f}'.format(
-                train_loss, val_loss_ex, val_loss, F1_macro))
+            print('Epoch Loss: {:.6f} |  Validation BCE Loss: {:.6f}  |  Validation Focal Loss: {:.6f} | Macro F1-score: {:.6f} | Sample F1-score: {:.6f}'.format(
+                train_loss, val_loss, val_loss_ex, F1_macro, F1_sample))
 
         if mode == "train":
             if (count == 10) or (best_loss < 1e-3):
@@ -298,32 +309,44 @@ def train_model(model, criterion1, criterion2, optimizer, epochs, mode, trainloa
 
     print("=" * 20)
     print("Training Complete.")
-    print("Best_loss: {:.6f} | F1-score: {:.6f}".format(best_loss, best_macro_F1))
+    print("Best_loss: {:.6f} | Macro F1-score: {:.6f} | Sample F1-score: {:.6f}".format(best_loss, best_macro_F1, best_sample_F1))
 
     # load best model weights
     model.load_state_dict(torch.load(path))
-    return model, val_losses, val_losses_ex, running_f1
+    return model, val_losses, val_losses_ex, running_f1, running_f1_sample
 
 #%%------------------------ Focal Loss -----------------------------
 class FocalLoss(nn.Module):
     """
-    source: https://www.kaggle.com/c/tgs-salt-identification-challenge/discussion/65938
+    base source code:
+    https://www.kaggle.com/c/tgs-salt-identification-challenge/discussion/65938
     """
-    def __init__(self, alpha=1, gamma=2, logits=True):
+
+    def __init__(self, alpha=0.25, gamma=1.5, logits=True):
         super(FocalLoss, self).__init__()
-        self.alpha = alpha
+        self.alpha = torch.tensor([alpha, 1-alpha])
         self.gamma = gamma
         self.logits = logits
 
 
     def forward(self, inputs, targets):
+
+        device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+        self.alpha = self.alpha.to(device)
+
+        inputs = inputs.view(-1)
+        targets = targets.view(-1)
+
         if self.logits:
             BCE_loss = F.binary_cross_entropy_with_logits(inputs, targets, reduction="none")
         else:
             BCE_loss = F.binary_cross_entropy(inputs, targets, reduction="none")
 
+        targets = targets.type(torch.long)
+        at = self.alpha.gather(0, targets.data.view(-1))
+
         pt = torch.exp(-BCE_loss)
-        F_loss = self.alpha * (1-pt)**self.gamma * BCE_loss
+        F_loss = at* (1-pt)**self.gamma * BCE_loss
 
         return torch.mean(F_loss)
 
