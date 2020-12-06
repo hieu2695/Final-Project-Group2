@@ -10,6 +10,8 @@ Using Kaggle CLI command (requires Kaggle API token):
 kaggle competitions download -c human-protein-atlas-image-classification
 ``
 
+------------------
+
 ## Download from GCP
 
 For convenience, I uploaded the data to my GCP so it can be downloaded using wget command.
