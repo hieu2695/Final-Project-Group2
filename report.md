@@ -89,6 +89,7 @@ F-1 macro score on validation set ---> 0.5132726667051809
 
 F-1 sample score on validation set ---> 0.5981695185037803
 
+Note! Resnet152 save model is not including in the repo as it is biger than the limit, but the code is provided and can be run to create the model.
 
 
 
