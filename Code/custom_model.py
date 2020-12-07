@@ -62,6 +62,7 @@ N_EPOCHS = 150
 DROPOUT = 0.05
 R = 4 # Input size
 a_size = n_classes # Output size
+early_stop = 10
 
 # %% ----------------------------------- Model CNN --------------------------------------------------------------
 
@@ -167,20 +168,26 @@ for epoch in range(N_EPOCHS):
     print("F-1 macro score on validation set ---> " + str(F1_macro))
     print("F-1 sample score on validation set ---> " + str(F1_sample))
 
-    # save model with better F1-score
+    # save model with better F1-score and add early stop if the model is not improve
     if epoch == 0:
         best_model_wts = copy.deepcopy(model.state_dict())
         torch.save(best_model_wts, "best_model.pt")
         best_macro_F1 = F1_macro
         best_sample_F1 = F1_sample
+        count = 0
 
     else:
         if F1_macro > best_macro_F1:
             best_macro_F1 = F1_macro
             best_sample_F1 = F1_sample
             best_model_wts = copy.deepcopy(model.state_dict())
-            torch.save(best_model_wts, "custom_model.pt")
+            torch.save(best_model_wts, "Custom_model.pt")
+            count = 0
+        else :
+            count += 1
 
+    if count > early_stop :
+        break
 # %% -------------------------------------- Testing Loop ----------------------------------------------------------
 model.load_state_dict(torch.load("custom_model.pt"))
 model.eval()  # change to evaluate mode
@@ -194,7 +201,7 @@ for i, data in enumerate(testloader, 0):
     y_test_pred = model(inputs)
     y_test_pred = torch.round(y_test_pred)
     loss = criterion(y_test_pred, test_labels)
-    test_loss_temp = loss.item()
+    test_loss_temp = loss.item() * len(inputs)
     test_running_loss += test_loss_temp
 
     true_targets = test_labels.cpu().detach().numpy()
@@ -205,12 +212,14 @@ for i, data in enumerate(testloader, 0):
     for pred in y_test_pred:
         test_preds.append(pred)
 
+test_loss = test_running_loss/len(testloader.sampler)
 test_preds = np.array(test_preds)
 test_targets = np.array(test_targets)
 test_F1_macro = f1_score(test_targets, test_preds, average='macro')
 test_F1_sample = f1_score(test_targets, test_preds, average='samples')
 
 print('Testing set :')
+print("Testing Loss ---> " + str(test_loss))
 print("F-1 macro score on validation set ---> " + str(test_F1_macro))
 print("F-1 sample score on validation set ---> " + str(test_F1_sample))
 print(model)
