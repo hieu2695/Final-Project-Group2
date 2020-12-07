@@ -7,7 +7,7 @@ In the project, I split the data in to 3 set which are train(70%), validation(15
 As the dataset is imbalance, I serach for the data that contain the minority classes which consist of Peroxisomes,Endosomes,Lysosomes, Microtubule ends, Mitotic spindle, Lipid droplets and Rods & rings in training set.
 Then I use oversmapling along with data augmentation technique to make the data more balance.
 
-# Modeling process
+## Modeling process
 
 Pytorch is used to use for modeling purpose. Starting with the created model, I used 4 2DConvolute layers starting with 16 channels then 32, 64 and 128 then respectively with Batch Normalization and Dropout. Then I used 3 linear layers to flatten the output from Convolute layers. The activation function is Relu and then using BCEWithLogitsLoss for loss function. I created the save point and early stop by F1-score macro and samples on validation set then final evalution the model on test set.
 
