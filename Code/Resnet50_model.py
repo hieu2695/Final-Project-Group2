@@ -189,6 +189,7 @@ for i, data in enumerate(testloader, 0):
     inputs, test_labels = inputs.to(device), test_labels.to(device)
     inputs, test_labels = Variable(inputs), Variable(test_labels)
     y_test_pred = model(inputs)
+    y_test_pred = torch.sigmoid(y_test_pred)
     y_test_pred = torch.round(y_test_pred)
     loss = criterion(y_test_pred, test_labels)
     test_loss_temp = loss.item()* len(inputs)
