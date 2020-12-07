@@ -191,7 +191,7 @@ for i, data in enumerate(testloader, 0):
     y_test_pred = model(inputs)
     y_test_pred = torch.round(y_test_pred)
     loss = criterion(y_test_pred, test_labels)
-    test_loss_temp = loss.item()
+    test_loss_temp = loss.item()* len(inputs)
     test_running_loss += test_loss_temp
 
     true_targets = test_labels.cpu().detach().numpy()
@@ -202,12 +202,14 @@ for i, data in enumerate(testloader, 0):
     for pred in y_test_pred:
         test_preds.append(pred)
 
+test_loss = test_running_loss/len(testloader.sampler)
 test_preds = np.array(test_preds)
 test_targets = np.array(test_targets)
 test_F1_macro = f1_score(test_targets, test_preds, average='macro')
 test_F1_sample = f1_score(test_targets, test_preds, average='samples')
 
 print('Testing set :')
+print("Testing Loss ---> " + str(test_loss))
 print("F-1 macro score on validation set ---> " + str(test_F1_macro))
 print("F-1 sample score on validation set ---> " + str(test_F1_sample))
 print(model)
