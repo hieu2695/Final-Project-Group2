@@ -17,7 +17,7 @@ Validation set
 Test set :
 
 Next, I used pre-trained model Resnet50 by chaning the first input layer to be 4 channel for using in our dataset and the output to be 28.
-
+/n 
 Result for Resnet50 model without data augmentation :
 Validation set
 
@@ -26,27 +26,41 @@ Test set :
 I used Keras for data augmentation purpose using ImageGenerator with rotation, width shift and height shift to generate more training samples with minority class.
 
 Result for Resnet50 model with data augmentation :
+
 Validation set :
+
 Validation Loss ---> 0.6911363989357057
+
 F-1 macro score on validation set ---> 0.5304892918144725
+
 F-1 sample score on validation set ---> 0.5794594463801781
 
 Test set :
+
 Testing Loss ---> 0.6910124851647347
+
 F-1 macro score on validation set ---> 0.4893733114790944
+
 F-1 sample score on validation set ---> 0.5773960023263643
 
 The last one, I tried Resnet152 model with data augmentation.
 
 Result for Resnet152 model with data augmentation :
+
 Validation set :
+
 Validation Loss ---> 0.6910018179474807
+
 F-1 macro score on validation set ---> 0.5699673836926441
+
 F-1 sample score on validation set ---> 0.6019212156407279
 
 Test set :
+
 Testing Loss ---> 0.6912819459884305
+
 F-1 macro score on validation set ---> 0.5132726667051809
+
 F-1 sample score on validation set ---> 0.5981695185037803
 
 
