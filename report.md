@@ -9,19 +9,45 @@ Then I use oversmapling along with data augmentation technique to make the data 
 
 ## Modeling process
 
-Pytorch is used to use for modeling purpose. Starting with the created model, I used 4 2DConvolute layers starting with 16 channels then 32, 64 and 128 then respectively with Batch Normalization and Dropout. Then I used 3 linear layers to flatten the output from Convolute layers. The activation function is Relu and then using BCEWithLogitsLoss for loss function. I created the save point and early stop by F1-score macro and samples on validation set then final evalution the model on test set.
+Pytorch is used to use for modeling purpose. Starting with the created CNN model, I used 4 2DConvolute layers starting with 16 channels then 32, 64 and 128 then respectively with Batch Normalization and Dropout. Then I used 3 linear layers to flatten the output from Convolute layers. The activation function is Relu and then using BCEWithLogitsLoss for loss function. I created the save point and early stop by F1-score macro and samples on validation set then final evalution the model on test set.
 
 Result for created model without data augmentation :
-Validation set
+
+Validation set :
+
+Validation Loss ---> 5.380734561904659
+
+F-1 macro score on validation set ---> 0.19791868350739197
+
+F-1 sample score on validation set ---> 0.403954945799458
 
 Test set :
+
+Testing Loss ---> 6.583458299373237
+
+F-1 macro score on validation set ---> 0.1582334784309444
+
+F-1 sample score on validation set ---> 0.31223228953033966
 
 Next, I used pre-trained model Resnet50 by chaning the first input layer to be 4 channel for using in our dataset and the output to be 28.
-/n 
+
 Result for Resnet50 model without data augmentation :
-Validation set
+
+Validation set :
+
+Validation Loss ---> 0.6943664432056551
+
+F-1 macro score on validation set ---> 0.2866343255451538
+
+F-1 sample score on validation set ---> 0.49713692895857525
 
 Test set :
+
+Testing Loss ---> 0.6944164406162578
+
+F-1 macro score on validation set ---> 0.27834991601249154
+
+F-1 sample score on validation set ---> 0.492392040024352
 
 I used Keras for data augmentation purpose using ImageGenerator with rotation, width shift and height shift to generate more training samples with minority class.
 
