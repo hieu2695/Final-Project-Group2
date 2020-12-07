@@ -1,30 +1,3 @@
-## DATA SOURCE
-https://www.kaggle.com/c/human-protein-atlas-image-classification/data
-
-The data can be manually downloaded after accepting the competition rule.
-
-Using Kaggle CLI command (requires Kaggle API token):
-
-kaggle competitions download -c human-protein-atlas-image-classification
-
-## Download from GCP
-
-For convenience, I uploaded the data to my GCP so it can be downloaded using wget command.
-
-Assuming that we are at the git repository Final-Project-Group2, else we need to move to the repo:
-
-cd ~/Final-Project-Group2
-
-At the git repo, download data via GCP using the command:
-
-wget https://storage.googleapis.com/letranhieu-bucket-data/data.zip
-
-Then, unzip the data.zip file:
-
-unzip data.zip
-
-The data will be unzipped to a folder named "data" containing "train" folder and "train.csv"
-
 ## Data Pre-process
 
 The data contain 4 channels of images consist of Red, Green, Blue and Yellow (RGBY) which each of the channel is in the Gray scale images. The step to load the images is to read gray scale of each chennels and resize it to 128x128, then stack it together. 
@@ -36,7 +9,45 @@ Then I use oversmapling along with data augmentation technique to make the data 
 
 # Modeling process
 
-In this part, I used Keras for data augmentation purpose using ImageGenerator with rotation, width shift and height shift to generate more training samples with minority class. Pytorch is used to use for modeling purpose.
+Pytorch is used to use for modeling purpose. Starting with the created model, I used 4 2DConvolute layers starting with 16 channels then 32, 64 and 128 then respectively with Batch Normalization and Dropout. Then I used 3 linear layers to flatten the output from Convolute layers. The activation function is Relu and then using BCEWithLogitsLoss for loss function. I created the save point and early stop by F1-score macro and samples on validation set then final evalution the model on test set.
+
+Result for created model without data augmentation :
+Validation set
+
+Test set :
+
+Next, I used pre-trained model Resnet50 by chaning the first input layer to be 4 channel for using in our dataset and the output to be 28.
+
+Result for Resnet50 model without data augmentation :
+Validation set
+
+Test set :
+
+I used Keras for data augmentation purpose using ImageGenerator with rotation, width shift and height shift to generate more training samples with minority class.
+
+Result for Resnet50 model with data augmentation :
+Validation set :
+Validation Loss ---> 0.6911363989357057
+F-1 macro score on validation set ---> 0.5304892918144725
+F-1 sample score on validation set ---> 0.5794594463801781
+
+Test set :
+Testing Loss ---> 0.6910124851647347
+F-1 macro score on validation set ---> 0.4893733114790944
+F-1 sample score on validation set ---> 0.5773960023263643
+
+The last one, I tried Resnet152 model with data augmentation.
+
+Result for Resnet152 model with data augmentation :
+Validation set :
+Validation Loss ---> 0.6910018179474807
+F-1 macro score on validation set ---> 0.5699673836926441
+F-1 sample score on validation set ---> 0.6019212156407279
+
+Test set :
+Testing Loss ---> 0.6912819459884305
+F-1 macro score on validation set ---> 0.5132726667051809
+F-1 sample score on validation set ---> 0.5981695185037803
 
 
 
