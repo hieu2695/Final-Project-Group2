@@ -17,7 +17,11 @@ if not os.path.exists(directory):
     os.makedirs(directory)
 
 #%% ---------------- read train.csv -----------------------
-df = pd.read_csv("train.csv")
+if "data" not in os.listdir():
+    os.system("wget https://storage.googleapis.com/letranhieu-bucket-data/data.zip")
+    os.system("unzip data.zip")
+
+df = pd.read_csv("data/train.csv")
 
 #%%------------- One-hot encoding labels --------------------
 # Cell types with corresponding labels
@@ -67,7 +71,7 @@ for i in range(len(df)):
         df.loc[i,col_name] = 1
 
 #%% ---------------- load images ------------------
-DATA_DIR = os.getcwd() + "/train/"
+DATA_DIR = os.getcwd() + "/data/train/"
 # define a function to read RGBY images
 def load_RBGY(id):
     RESIZE_TO = 128
