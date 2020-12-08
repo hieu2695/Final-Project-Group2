@@ -94,7 +94,7 @@ for k in range(4):
     y_train = np.concatenate((y_train, y_rare))
 
 #%% --------------------- Save resampled data -------------
-np.save("../processed_data/splitted_data/x_train_over", x_train)
+np.save("../processed_data/splitted_data/x_train_over.npy", x_train)
 np.save("../processed_data/splitted_data/y_train_over.npy", y_train)
 # %%--------------
 print("Done!")
