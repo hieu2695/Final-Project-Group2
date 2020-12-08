@@ -5,7 +5,7 @@ The data.zip needed to be downloaded and unzipped to data folder in the repo bef
 
 ## Download from GCP
 
-Assuming that we are at the TranHieu-Le-individual-project directory Final-Project-Group2/TranHieu-Le-individual-project, else we need to move to the this folder:
+Assuming that we are at the "TranHieu-Le-individual-project" directory, else we need to move to the this folder:
 
 ``
 cd ~/Final-Project-Group2/TranHieu-Le-individual-project
