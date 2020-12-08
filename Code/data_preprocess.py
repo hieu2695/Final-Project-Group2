@@ -68,10 +68,10 @@ print(x_train.shape, y_train.shape)
 print(x_val.shape, y_val.shape)
 print(x_test.shape, y_test.shape)
 # %% ------------------------- Saving data ---------------------------------------
-np.save("../processed_data/splitted_data/x_train", x_train)
+np.save("../processed_data/splitted_data/x_train.npy", x_train)
 np.save("../processed_data/splitted_data/y_train.npy", y_train)
 
-np.save("../processed_data/splitted_data/x_val", x_val)
+np.save("../processed_data/splitted_data/x_val.npy", x_val)
 np.save("../processed_data/splitted_data/y_val.npy", y_val)
 
 np.save("../processed_data/splitted_data/x_test.npy", x_test)
