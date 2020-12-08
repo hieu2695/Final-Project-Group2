@@ -15,15 +15,11 @@ Result for created model without data augmentation :
 
 Validation set :
 
-Validation Loss ---> 5.380734561904659
-
 F-1 macro score on validation set ---> 0.19791868350739197
 
 F-1 sample score on validation set ---> 0.403954945799458
 
 Test set :
-
-Testing Loss ---> 6.583458299373237
 
 F-1 macro score on validation set ---> 0.1582334784309444
 
@@ -35,15 +31,11 @@ Result for Resnet50 model without data augmentation :
 
 Validation set :
 
-Validation Loss ---> 0.6943664432056551
-
 F-1 macro score on validation set ---> 0.2866343255451538
 
 F-1 sample score on validation set ---> 0.49713692895857525
 
 Test set :
-
-Testing Loss ---> 0.6944164406162578
 
 F-1 macro score on validation set ---> 0.27834991601249154
 
@@ -55,15 +47,11 @@ Result for Resnet50 model with data augmentation :
 
 Validation set :
 
-Validation Loss ---> 0.6911363989357057
-
 F-1 macro score on validation set ---> 0.5304892918144725
 
 F-1 sample score on validation set ---> 0.5794594463801781
 
 Test set :
-
-Testing Loss ---> 0.6910124851647347
 
 F-1 macro score on validation set ---> 0.4893733114790944
 
@@ -75,15 +63,11 @@ Result for Resnet152 model with data augmentation :
 
 Validation set :
 
-Validation Loss ---> 0.6910018179474807
-
 F-1 macro score on validation set ---> 0.5699673836926441
 
 F-1 sample score on validation set ---> 0.6019212156407279
 
 Test set :
-
-Testing Loss ---> 0.6912819459884305
 
 F-1 macro score on validation set ---> 0.5132726667051809
 
