@@ -14,7 +14,7 @@ kaggle competitions download -c human-protein-atlas-image-classification
 
 ## Download from GCP
 
-For convenience, I uploaded the data to my GCP so it can be downloaded using wget command.
+For convenience, I uploaded the data to my GCP so it can be downloaded via terminal using wget command.
 
 Assuming that we are at the git repository Final-Project-Group2, else we need to move to the repo:
 
