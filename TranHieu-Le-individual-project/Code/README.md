@@ -1,7 +1,30 @@
 ## Python scripts description:
 
 ### Note:
-The data.zip needed to be downloaded and unzipped to data folder in the repo before running codes in this folder. Check the instruction in data_download.md in the repo to download data.
+The data.zip needed to be downloaded and unzipped to data folder in the repo before running codes in this folder. 
+
+## Download from GCP
+
+Assuming that we are at the TranHieu-Le-individual-project directory Final-Project-Group2/TranHieu-Le-individual-project, else we need to move to the this folder:
+
+``
+cd ~/Final-Project-Group2/TranHieu-Le-individual-project
+`` 
+
+At the git repo, download data via GCP using the command:
+
+``
+wget https://storage.googleapis.com/letranhieu-bucket-data/data.zip
+``
+
+Then, unzip the data.zip file:
+
+``
+unzip data.zip
+``
+
+The data will be unzipped to a folder named "data" in "TranHieu-Le-individual-project" folder and the "data" contains "train" folder and "train.csv"
+
 
 ------------------------------------------------------------------------------------------------------------
 The following scripts needed to be run first in the below order:
