@@ -1,7 +1,7 @@
 ## Python scripts description:
 
 ### Note:
-The data.zip needed to be downloaded and unzipped to data folder in the repo before running codes in this folder.
+The data.zip needed to be downloaded and unzipped to data folder in the repo before running codes in this folder. Check the instruction in data_download.md in the repo to download data.
 
 ------------------------------------------------------------------------------------------------------------
 The following scripts needed to be run first in the below order:
