@@ -11,7 +11,7 @@ Assuming that we are at the TranHieu-Le-individual-project directory Final-Proje
 cd ~/Final-Project-Group2/TranHieu-Le-individual-project
 `` 
 
-At the git repo, download data via GCP using the command:
+At the "TranHieu-Le-individual-project" folder, download data via GCP using the command:
 
 ``
 wget https://storage.googleapis.com/letranhieu-bucket-data/data.zip
