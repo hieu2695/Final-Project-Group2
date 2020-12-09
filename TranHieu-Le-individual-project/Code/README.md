@@ -49,3 +49,4 @@ The following scripts needed to be run in the correct order:
 The following 2 scripts provide functions and classes to be used in other scripts:
 - "Helper.py"
 - "Helper1.py"
+These two scrips provide a class to perform augmentation and generate a torch.utils.data.Dataset which will be used to generate DataLoader, a class to implement focal loss and a function that perform the training process.
