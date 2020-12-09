@@ -15,3 +15,9 @@ The dataset for the project comes from the [Human Protein Atlas Kaggle competiti
 
 The “train.csv” data contains 31072 samples of 27 different living cells. Each sample is represented by four images, the protein of interest which is the main filter and three cellular landmarks as references: nucleus, microtubules and endoplasmic reticulum. The target is the protein pattern including 28 categories labeled from 0 to 27. Each sample may have one or more labels.
 
+## About this repository
+
+- "firstname-lastname-individual-project" folders: individual work on the project with code and a detailed individual report.
+- Code: the codes for best model.
+- Final-Group-Project-Report: the combination and summary of our individual reports. Please check our individual reports for clear and detailed about our work.
+
